@@ -1,6 +1,6 @@
 import React from 'react';
 import FormField from './FormField';
-
+import useInput from '../../hooks/useInput';
 const formFields = [
   {
     id: 'name',
@@ -29,6 +29,14 @@ const formFields = [
 ];
 
 const Contact = () => {
+  const {
+    value,
+    isValidValue,
+    isError,
+    touchedHandler,
+    valueChangedHandler,
+    reset,
+  } = useInput((v) => v.trim() !== '');
   return (
     // <!-- Contact Section-->
     <section className='page-section' id='contact'>
@@ -72,6 +80,9 @@ const Contact = () => {
                   type='text'
                   placeholder='Enter your name...'
                   data-sb-validations='required'
+                  value={value}
+                  onChange={valueChangedHandler}
+                  onBlur={touchedHandler}
                 />
                 <label for='name'>Full name</label>
                 <div
