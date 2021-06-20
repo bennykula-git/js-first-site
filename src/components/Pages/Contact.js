@@ -2,30 +2,6 @@ import React, { useState } from 'react';
 import FormField from './FormField';
 import useInput from '../../hooks/useInput';
 
-const formFields = [
-  {
-    id: 'name',
-    type: 'text',
-    placeholder: 'Enter your name...',
-    lable: 'Full name',
-    msg: 'A name is required.',
-  },
-  {
-    id: 'email',
-    type: 'email',
-    placeholder: 'name@example.com',
-    lable: 'Full name',
-    msg: 'A valid email is required.',
-  },
-  {
-    id: 'phone',
-    type: 'tel',
-    placeholder: '(123) 456-7890',
-    lable: 'Phone number',
-    msg: 'Phone number is required.',
-  },
-];
-
 const Contact = () => {
   const submitHandler = (event) => {
     event.preventDefault();
@@ -112,7 +88,7 @@ const Contact = () => {
             <form id='contactForm'>
               {/* <!-- Name input--> */}
 
-              {/* <FormField
+              <FormField
                 id='name'
                 type='text'
                 placeholder='Enter your name...'
@@ -122,57 +98,31 @@ const Contact = () => {
                 lable='FullName'
                 isError={isNameError}
                 msg='A name is required.'
-              ></FormField> */}
+              ></FormField>
 
-              <div className='form-floating mb-3'>
-                <input
-                  className='form-control'
-                  id='name'
-                  type='text'
-                  placeholder='Enter your name...'
-                  value={name}
-                  onChange={nameChanged}
-                  onBlur={nameTouched}
-                />
-                <label>Full name</label>
-                {isNameError && (
-                  <div className='invalid-input'>A name is required.</div>
-                )}
-              </div>
               {/* <!-- Email address input--> */}
-              <div className='form-floating mb-3'>
-                <input
-                  className='form-control'
-                  id='email'
-                  type='email'
-                  placeholder='name@example.com'
-                  value={email}
-                  onChange={emailChanged}
-                  onBlur={emailTouched}
-                />
-                <label>Email address</label>
-                {isEmailError && (
-                  <div className='invalid-input'>An valid email is required.</div>
-                )}
-              </div>
-              {/* <!-- Phone number input--> */}
-              <div className='form-floating mb-3'>
-                <input
-                  className='form-control'
-                  id='phone'
-                  type='tel'
-                  placeholder='(123) 456-7890'
-                  value={phone}
-                  onChange={phoneChanged}
-                  onBlur={phoneTouched}
-                />
-                <label>Phone number</label>
-                {isPhoneError && (
-                  <div className='invalid-input'>
-                    A valid phone number is required.
-                  </div>
-                )}
-              </div>
+              <FormField
+                id='email'
+                type='email'
+                placeholder='Enter your email...'
+                value={email}
+                onChange={emailChanged}
+                onBlur={emailTouched}
+                lable='Email'
+                isError={isEmailError}
+                msg='A valid email is required.'
+              ></FormField>
+              <FormField
+                id='phone'
+                type='tel'
+                placeholder='Enter your phone...'
+                value={phone}
+                onChange={phoneChanged}
+                onBlur={phoneTouched}
+                lable='Phone number'
+                isError={isPhoneError}
+                msg='A phone number is required.'
+              ></FormField>
               {/* <!-- Message input--> */}
               <div className='form-floating mb-3'>
                 <textarea
