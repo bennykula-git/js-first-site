@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import FormField from './FormField';
 import useInput from '../../hooks/useInput';
+
 const formFields = [
   {
     id: 'name',
@@ -29,14 +30,66 @@ const formFields = [
 ];
 
 const Contact = () => {
+  // const [name, setName] = useState('');
+  // const [email, setemail] = useState('');
+  // const [phone, setPhone] = useState('');
+  // const [msg, setMsg] = useState('');
+
+  const submitHandler = (event) => {
+    event.preventDefault();
+    const req = {
+      name,
+      // email,
+      // phone,
+      // msg,
+    };
+    fetch('http://localhost:8080/api/test/jjj')
+      .then((res) => res.json())
+      .then((d) => console.log(d.firstName));
+    // alert('SSSS');
+
+    resetName();
+    resetEmail();
+    resetPhone();
+    resetMsg();
+  };
   const {
-    value,
-    isValidValue,
-    isError,
-    touchedHandler,
-    valueChangedHandler,
-    reset,
+    value: name,
+    isValidValue: isValidName,
+    isError: isNameError,
+    touchedHandler: nameTouched,
+    valueChangedHandler: nameChanged,
+    reset: resetName,
   } = useInput((v) => v.trim() !== '');
+
+  const {
+    value: email,
+    isValidValue: isValidEmail,
+    isError: isEmailError,
+    touchedHandler: emailTouched,
+    valueChangedHandler: emailChanged,
+    reset: resetEmail,
+  } = useInput((v) => /\S+@\S+\.\S+/.test(v));
+
+  const {
+    value: phone,
+    isValidValue: isValidPhone,
+    isError: isPhoneError,
+    touchedHandler: phoneTouched,
+    valueChangedHandler: phoneChanged,
+    reset: resetPhone,
+  } = useInput((v) => /^\d+$/.test(v));
+
+  const {
+    value: msg,
+    isValidValue: isValidMsg,
+    isError: isMsgError,
+    touchedHandler: msgTouched,
+    valueChangedHandler: msgChanged,
+    reset: resetMsg,
+  } = useInput((v) => v.trim() !== '');
+
+  const isValidForm = isValidName && isValidEmail && isValidPhone && isValidMsg;
   return (
     // <!-- Contact Section-->
     <section className='page-section' id='contact'>
@@ -71,7 +124,10 @@ const Contact = () => {
             <!-- To make this form functional, sign up at-->
             <!-- https://startbootstrap.com/solution/contact-forms-->
             <!-- to get an API token!--> */}
-            <form id='contactForm' data-sb-form-api-token='API_TOKEN'>
+            <form
+              id='contactForm'
+              // data-sb-form-api-token='API_TOKEN'
+            >
               {/* <!-- Name input--> */}
               <div className='form-floating mb-3'>
                 <input
@@ -79,18 +135,20 @@ const Contact = () => {
                   id='name'
                   type='text'
                   placeholder='Enter your name...'
-                  data-sb-validations='required'
-                  value={value}
-                  onChange={valueChangedHandler}
-                  onBlur={touchedHandler}
+                  // data-sb-validations='required'
+                  value={name}
+                  onChange={nameChanged}
+                  onBlur={nameTouched}
                 />
-                <label for='name'>Full name</label>
-                <div
-                  className='invalid-feedback'
-                  data-sb-feedback='name:required'
-                >
-                  A name is required.
-                </div>
+                <label htmlFor='name'>Full name</label>
+                {isNameError && (
+                  <div
+                    className='invalid-input'
+                    // data-sb-feedback='name:required'
+                  >
+                    A name is required.
+                  </div>
+                )}
               </div>
               {/* <!-- Email address input--> */}
               <div className='form-floating mb-3'>
@@ -99,18 +157,20 @@ const Contact = () => {
                   id='email'
                   type='email'
                   placeholder='name@example.com'
-                  data-sb-validations='required,email'
+                  // data-sb-validations='required,email'
+                  value={email}
+                  onChange={emailChanged}
+                  onBlur={emailTouched}
                 />
-                <label for='email'>Email address</label>
-                <div
-                  className='invalid-feedback'
-                  data-sb-feedback='email:required'
-                >
-                  An email is required.
-                </div>
-                <div className='invalid-feedback' data-sb-feedback='email:email'>
-                  Email is not valid.
-                </div>
+                <label htmlFor='email'>Email address</label>
+                {isEmailError && (
+                  <div
+                    className='invalid-input'
+                    // data-sb-feedback='email:required'
+                  >
+                    An valid email is required.
+                  </div>
+                )}
               </div>
               {/* <!-- Phone number input--> */}
               <div className='form-floating mb-3'>
@@ -119,15 +179,20 @@ const Contact = () => {
                   id='phone'
                   type='tel'
                   placeholder='(123) 456-7890'
-                  data-sb-validations='required'
+                  // data-sb-validations='required'
+                  value={phone}
+                  onChange={phoneChanged}
+                  onBlur={phoneTouched}
                 />
-                <label for='phone'>Phone number</label>
-                <div
-                  className='invalid-feedback'
-                  data-sb-feedback='phone:required'
-                >
-                  A phone number is required.
-                </div>
+                <label htmlFor='tel'>Phone number</label>
+                {isPhoneError && (
+                  <div
+                    className='invalid-input'
+                    // data-sb-feedback='phone:required'
+                  >
+                    A valid phone number is required.
+                  </div>
+                )}
               </div>
               {/* <!-- Message input--> */}
               <div className='form-floating mb-3'>
@@ -137,15 +202,20 @@ const Contact = () => {
                   type='text'
                   placeholder='Enter your message here...'
                   // style='height: 10rem'
-                  data-sb-validations='required'
+                  // data-sb-validations='required'
+                  value={msg}
+                  onChange={msgChanged}
+                  onBlur={msgTouched}
                 ></textarea>
-                <label for='message'>Message</label>
-                <div
-                  className='invalid-feedback'
-                  data-sb-feedback='message:required'
-                >
-                  A message is required.
-                </div>
+                <label htmlFor='message'>Message</label>
+                {isMsgError && (
+                  <div
+                    className='invalid-input'
+                    // data-sb-feedback='message:required'
+                  >
+                    A message is required.
+                  </div>
+                )}
               </div>
               {/* <!-- Submit success message-->
               <!---->
@@ -154,11 +224,11 @@ const Contact = () => {
               <div className='d-none' id='submitSuccessMessage'>
                 <div className='text-center mb-3'>
                   <div className='fw-bolder'>Form submission successful!</div>
-                  To activate this form, sign up at
+                  {/* To activate this form, sign up at
                   <br />
                   <a href='https://startbootstrap.com/solution/contact-forms'>
                     https://startbootstrap.com/solution/contact-forms
-                  </a>
+                  </a> */}
                 </div>
                 ``
               </div>
@@ -173,9 +243,11 @@ const Contact = () => {
               </div>
               {/* <!-- Submit Button--> */}
               <button
-                className='btn btn-primary btn-xl disabled'
+                // className='btn btn-primary btn-xl disabled'
                 id='submitButton'
                 type='submit'
+                onClick={submitHandler}
+                disabled={!isValidForm}
               >
                 Send
               </button>
