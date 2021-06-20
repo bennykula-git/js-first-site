@@ -1,4 +1,32 @@
 import React from 'react';
+import FormField from './FormField';
+
+const formFields = [
+  {
+    id: 'name',
+    type: 'text',
+    placeholder: 'Enter your name...',
+    lable: 'Full name',
+    msg: 'A name is required.',
+    feedback: 'name:required',
+  },
+  {
+    id: 'email',
+    type: 'email',
+    placeholder: 'name@example.com',
+    lable: 'Full name',
+    msg: 'A valid email is required.',
+    feedback: 'email:required',
+  },
+  {
+    id: 'phone',
+    type: 'tel',
+    placeholder: '(123) 456-7890',
+    lable: 'Phone number',
+    msg: 'Phone number is required.',
+    feedback: 'phone:required',
+  },
+];
 
 const Contact = () => {
   return (
