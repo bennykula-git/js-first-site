@@ -3,12 +3,15 @@ import Home from './components/Pages/Home';
 import Portfolio from './components/Pages/Portfolio';
 import About from './components/Pages/About';
 import Contact from './components/Pages/Contact';
-import { BrowserRouter, Route, Link } from 'react-router-dom';
+import Contacts from './components/Pages/Contacts';
+import { BrowserRouter, Route } from 'react-router-dom';
 
 function App() {
   return (
     <BrowserRouter>
       <PageWraper>
+        <br />
+
         <Route exact path='/'>
           <Home></Home>
         </Route>
@@ -21,8 +24,12 @@ function App() {
         <Route exact path='/contact'>
           <Contact></Contact>
         </Route>
-
-        {/* <Portfolio></Portfolio> */}
+        <Route exact path='/contact/:contactId'>
+          <Contact></Contact>
+        </Route>
+        <Route exact path='/allcontacts'>
+          <Contacts></Contacts>
+        </Route>
       </PageWraper>
     </BrowserRouter>
   );

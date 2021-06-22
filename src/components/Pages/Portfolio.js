@@ -48,8 +48,7 @@ const Portfolio = () => {
       <section className='page-section portfolio' id='portfolio'>
         <div className='container'>
           {/* <!-- Portfolio Section Heading--> */}
-          <br />
-          <br />
+
           <h2
             className='
             page-section-heading

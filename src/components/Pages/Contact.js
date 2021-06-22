@@ -1,20 +1,70 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import FormField from './FormField';
 import useInput from '../../hooks/useInput';
+import { useParams } from 'react-router-dom';
 
 const Contact = () => {
+  // const params = useParams();
+  // console.log(params.contactId);
+  const contactId = useParams().contactId;
+
+  useEffect(() => {
+    loadContact(contactId);
+  }, [contactId]);
+
+  // const [data, setData] = useState(initialData);
+
+  const loadContact = async (contactId) => {
+    try {
+      const response = await fetch(
+        'http://localhost:8080/api/contacts/id?id=' + contactId
+      );
+
+      if (!response.ok) {
+        throw new Error('not found');
+      }
+      const data = await response.json();
+      console.log(data.name);
+      // setData({ iName: 'wjhfghkjgwfhjg' });
+      updateName(data.name);
+      updateEmail(data.email);
+      updatePhone(data.phone);
+      updateMsg(data.message);
+    } catch (error) {
+      alert(error.message);
+    }
+    // name = data.name;
+    // email = data.email;
+    // phone = data.phone;
+    // msg = data.message;
+  };
+
+  const sendRequest = async (contact) => {
+    let method = 'POST';
+    if (contact.id !== '') {
+      method = 'PUT';
+    }
+    const response = await fetch('http://localhost:8080/api/contacts', {
+      method: method,
+      body: JSON.stringify(contact),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const data = await response.json();
+    alert(data);
+  };
+
   const submitHandler = (event) => {
     event.preventDefault();
-    const req = {
+    const contact = {
+      id: contactId,
       name,
       email,
       phone,
-      msg,
+      message: msg,
     };
-    fetch('http://localhost:8080/api/test/' + name)
-      .then((res) => res.json())
-      .then((d) => alert(d.firstName));
-    // alert('SSSS');
+    sendRequest(contact);
 
     resetName();
     resetEmail();
@@ -28,6 +78,7 @@ const Contact = () => {
     touchedHandler: nameTouched,
     valueChangedHandler: nameChanged,
     reset: resetName,
+    updateVal: updateName,
   } = useInput((v) => v.trim() !== '');
 
   const {
@@ -37,6 +88,7 @@ const Contact = () => {
     touchedHandler: emailTouched,
     valueChangedHandler: emailChanged,
     reset: resetEmail,
+    updateVal: updateEmail,
   } = useInput((v) => /\S+@\S+\.\S+/.test(v));
 
   const {
@@ -46,6 +98,7 @@ const Contact = () => {
     touchedHandler: phoneTouched,
     valueChangedHandler: phoneChanged,
     reset: resetPhone,
+    updateVal: updatePhone,
   } = useInput((v) => /^\d+$/.test(v));
 
   const {
@@ -55,14 +108,13 @@ const Contact = () => {
     touchedHandler: msgTouched,
     valueChangedHandler: msgChanged,
     reset: resetMsg,
+    updateVal: updateMsg,
   } = useInput((v) => v.trim() !== '');
 
   const isValidForm = isValidName && isValidEmail && isValidPhone && isValidMsg;
   return (
     // <!-- Contact Section-->
     <section className='page-section' id='contact'>
-      <br />
-      <br />
       <div className='container'>
         {/* <!-- Contact Section Heading--> */}
         <h2
@@ -82,6 +134,7 @@ const Contact = () => {
           </div>
           <div className='divider-custom-line'></div>
         </div>
+
         {/* <!-- Contact Section Form--> */}
         <div className='row justify-content-center'>
           <div className='col-lg-8 col-xl-7'>

@@ -16,6 +16,10 @@ const useInput = (validation) => {
     setValue(event.target.value);
   };
 
+  const updateVal = (val) => {
+    setValue(val);
+  };
+
   const reset = () => {
     setTouched(false);
     setValue('');
@@ -28,6 +32,7 @@ const useInput = (validation) => {
     touchedHandler,
     valueChangedHandler,
     reset,
+    updateVal,
   };
 };
 
